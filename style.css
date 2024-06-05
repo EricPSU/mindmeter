@@ -1,0 +1,247 @@
+.grid {
+    /* display: grid;  This is set via JavaScript */
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
+    gap: .1em 3em;
+    justify-items: center; /* Horizontally center align the content */
+    align-items: center; /* Vertically center align the content */
+  }
+  
+  .grid-top,
+  .grid-bottom {
+    text-align: center; /* Optionally center align the text within the divs */
+  }
+
+
+body {
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    color: white;
+    background-color: #202020;    
+}
+
+.container {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 500px;
+}
+
+.content {
+    display: flex;
+    width: 75%;
+    justify-content: space-between;
+}
+
+.h1, .h2, .h3 .h4 {
+    font-size:1rem;
+}
+
+.h1 {
+    color: #2e8ece;
+}
+
+.h3 {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 0;
+    font-size: 2rem;
+    width: 100%;
+}
+
+#time {
+    font-size: 4rem;
+    color: #2e8ece;
+}
+
+.target {
+    opacity: 0.6;
+}
+
+#estimated_time, #lap_time, #target_time, #target_lap {
+    color: white;
+    font-size: 3.5rem;
+}
+
+#distance {
+    font-size: 3rem;
+}
+
+
+
+button {
+    outline: none;
+    border: none;
+    font-size: 3rem;
+    height: 4rem;
+    font-family: inherit;
+    background-color: #2e8ece;
+    color: white;
+    outline-offset: 0.2rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.start {
+    width: 100%;
+}
+
+.lap, .resume, .finish {
+    width: 70%;
+}
+
+.pause, .reset {
+    width: 25%;
+    background-color: rgb(75, 75, 75);
+}
+
+#actionButton2, #target_lap, #target_lap_header, #target_time, #target_time_header {
+    display: none;
+}
+
+.finish:disabled {
+    background-color: rgb(75, 75, 75);
+    opacity: 0.4;
+}
+
+#races {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.race {
+    width: 8rem;
+    margin: .7rem;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.race.selected {
+    background-color: #2e8ece;
+    outline: 2px solid #2e8ece;
+}
+
+#settings, #feedback {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+.settings_div {
+    font-size: 1.5rem;
+    width: 96%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+
+.settings_name {
+    
+    width: 40%;
+    text-align: left;
+}
+
+.settings_value {
+    font-weight: 600;
+    width: 60%;
+    text-align: right;
+}
+
+.settings_description {
+    opacity: 0.6;
+    width: 96%;
+    text-align: left;
+    font-size: 1rem;
+    margin-bottom: .8rem;
+}
+
+
+/* LAP HISTORY */
+#lap_history {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.lap_div {
+    font-size: 1.5rem;
+    width: 96%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 0;
+}
+
+.lap_num {
+    opacity: 0.6;
+    width: 25%;
+    text-align: left;
+}
+
+.lap_delta_faster {
+    color: green;
+    width: 25%;
+    text-align: right;
+}
+
+.lap_delta_slower {
+    color: red;
+    width: 25%;
+    text-align: right;
+}
+
+.lap_split {
+    font-weight: 600;
+    width: 25%;
+    text-align: right;
+}
+
+.lap_time {
+    opacity: 0.6;
+    width: 25%;
+    text-align: right;
+}
+
+.relay_runner {
+    opacity: 0.6;
+    width: 50%;
+    text-align: left;
+}
+
+.relay_time {
+    font-weight: 600;
+    width: 50%;
+    text-align: right;
+}
+
+.time_button {
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    height: 2rem;
+    font-family: inherit;
+    background-color: rgb(75, 75, 75);
+    color: white;
+    outline-offset: 0.2rem;
+    cursor: pointer;
+    margin: .5rem;
+}
+
+
+
+
+

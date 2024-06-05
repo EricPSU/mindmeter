@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omega Minds - MindMeter</title>
+    <link rel="stylesheet" href="./style.css?v5">
+    <script src="https://kit.fontawesome.com/446f7c5010.js" crossorigin="anonymous"></script>
+</head>
+
+<!-- Google tag (gtag.js) -->
+<!-- I'm watching you, Wazowski. Always watching. Always... -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YPCL3H7ZKK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YPCL3H7ZKK');
+</script>
+
+<body>
+    <div class="container">
+        <div style="margin:-10px"><a href="../"><img src="../custom/logo-dark.png" /></a></div>
+        
+        <label id="time">00:00:000</label>
+        <label id="race_name" class="h1">TOTAL TIME</label>
+
+        <div id="lap_time_grid" class="grid">
+            <div id="target_lap" class="grid-top target">00:00</div>
+            <div id="lap_time" class="grid-top">00:00</div>
+            <div id="target_lap_header" class="grid-bottom h2 target">TARGET LAP SPLIT</div>
+            <div id="lap_header" class="grid-bottom h2">LAP TIME</div>
+        </div>
+
+        <div id="estimated_time_grid" class="grid">
+            <div id="target_time" class="grid-top target">00:00</div>
+            <div id="estimated_time" class="grid-top">00:00</div>
+            <div id="target_time_header" class="grid-bottom h2 target">TARGET TIME</div>
+            <div id="estimated_time_header" class="grid-bottom h2">ESTIMATED TIME</div>
+        </div>
+
+        <div class="content">
+            <button id="actionButton1" class="start">Start</button>
+            <button id="actionButton2"></button>           
+        </div>
+
+        <div id="splash_screen">
+            <div id="settings">
+                <label class="h3">Settings</label> 
+                
+                <div class="settings_div">
+                    <div class="settings_name">Track Event</div>
+                    <div class="settings_value">
+                        <select id="settings_race">
+                            <option value="800m">800 Meter</option>
+                            <option value="1500m" selected>1500 Meter</option>
+                            <option value="1600m">1600 Meter</option>
+                            <option value="3000m">3000 Meter</option>
+                            <option value="3200m">3200 Meter</option>
+                            <option value="4x800m">4x800 Meter Relay</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings_description">Select the event you would like to measure.  If I am missing any other
+                    events please let me know!
+                </div>
+
+                <div class="settings_div">
+                    <div class="settings_name">Lap Distance</div>
+                    <div class="settings_value">
+                        <select id="settings_lap_distance">
+                            <option value="200">200 Meters</option>
+                            <option value="400" selected>400 Meters</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings_description">The lap distance establishes where on the track you will capture 
+                    your splits.  This will also define the number of laps.</div>
+
+                <div class="settings_div">
+                    <div class="settings_name">Partial Lap</div>
+                    <div class="settings_value">
+                        <select id="settings_partial_lap">
+                            <option value="FIRST" selected>First Lap</option>
+                            <option value="LAST">Last Lap</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings_description">For events that have laps that don't go the full 400 meters, such as 
+                    the 1500 and 3000.  Define if you want the 300 meter "partial lap" to be captured as the first 
+                    or last lap. The lap pace for the partial lap is increased as if it were 400m.</div>
+
+                <div class="settings_div">
+                    <div class="settings_name">Target Time</div>
+                    <div class="settings_value">
+                        <div class="dropdowns">
+                            <select id="minutes">
+                                <option value=""></option>
+                            </select>:
+                            <select id="seconds">
+                                <option value=""></option>
+                            </select>
+                            <button class="time_button" id="clearButton">Clear</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings_description">Establishing a target finish time will display a 
+                    target lap split that updates based on the pace of the previous lap.  Press clear
+                    if you want to remove this setting value.</div>
+            </div>
+
+            <div id="feedback">
+                <label class="h3">Feedback</label>
+                <div class="settings_description">Thanks for all of your feedback!  I still plan to provide a 
+                    way for you to see previous history.  I am also trying to figure out a good design for one 
+                    coach tracking up to 5 runners at the same time.</div>
+            </div>
+        </div>
+
+        <div id="lap_history"></div>
+
+    <!--<script src="./HackTimer.js"></script> <!-- Keeps setInterval() running in background -->
+    <script src="./script.js?v5"></script>
+</body>
+</html>
