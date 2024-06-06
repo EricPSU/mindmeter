@@ -89,7 +89,6 @@ function initializeObjectFromCookie(cookieName) {
 
 // Function checks if the value is an integer and the remainder of dividing it by 1 is 0.  Returns a boolean.
 function isWholeNumber(value) {
-    
     return Number.isInteger(value) && value % 1 === 0;
 }
 
@@ -714,31 +713,85 @@ actionButton2.addEventListener("click", handleActionButton);
 applySettings();
 
 
-function saveLapHistory() {
-    // Get the lapHistory from localStorage
-    var lapHistory = [];
-    var lapHistoryString = localStorage.getItem('lapHistory');
-    if (lapHistoryString != null) {
-        lapHistory = JSON.parse(lapHistoryString);
+
+function getLocalStorage(key) {
+    const valueString = localStorage.getItem(key);
+    const value = [];
+
+    // Check if the key has any value
+    if (valueString != null) {
+        const value = JSON.parse(valueString);
+        console.log("Returning local storage value " + key);
+        console.log(value);
+    } else {
+        console.log("No localStorage found for " + key);
     }
-
-    // Format start date of the most recent race to MM/DD/YYYY HH:MM:SS PM
-    const date = laps[0].start;
-    const padZero = (value) => value.toString().padStart(2, '0');
-    const get12HourFormat = (hours) => (hours % 12 || 12);
-    const getAmPm = (hours) => (hours >= 12 ? 'PM' : 'AM');
-    const formattedDate = `${padZero(date.getMonth() + 1)}/${padZero(date.getDate())}/${date.getFullYear()} ${get12HourFormat(date.getHours())}:${padZero(date.getMinutes())}:${padZero(date.getSeconds())} ${getAmPm(date.getHours())}`;
-    
-    // Add a label for this set of laps
-    const lapHistoryName = settings.race + " - " + formattedDate;
-
-    // Add this set of laps to the lapHistory array
-    const newLapEntry = { ...laps, label: lapHistoryName };
-    lapHistory.push(newLapEntry);
-
-    // Save the lapHistory to localStorage
-    lapHistoryString = JSON.stringify(lapHistory);
-    localStorage.setItem('lapHistory', lapHistoryString);
+    return value;
 }
 
 
+function saveLocalStorage(key, value) {
+    console.log("Saving local storage value " + key);
+    console.log(value);
+    var valueString = JSON.stringify(value);
+    localStorage.setItem(key, valueString);
+}
+
+
+function saveLapHistory() {
+    // Get the lapHistory from localStorage
+    let raceHistory = [];
+    raceHistory = getLocalStorage("raceHistory");
+
+    // Build the new entry to save
+    const newRaceEntry = {
+        name: settings.race,
+        meters: race.meters,
+        laps: race.laps,
+        time: timerDelta,
+        lapData: laps
+    }
+    console.log("Adding newRaceEntry:");
+    console.log(newRaceEntry);
+    
+    // Add the newRaceEntry to the raceHistory
+    raceHistory.push(newRaceEntry);
+
+    // Save the new raceHistory to local storage
+    saveLocalStorage('raceHistory', raceHistory);
+}
+
+
+// This function displays a list of saved runs
+function viewSavedRuns () {
+    // Get history
+    const lapHistory = getLocalStorage("lapHistory");
+    const parent_div = document.getElementById("saved_runs");
+
+    const currentHistory = Object.values(lapHistory);
+    for (let i = 0; i < lapHistory.length; i++) {
+        console.log('Array Item: ' + i);
+        console.log("Label: " + lapHistory[i].label);
+        console.log("start: " + lapHistory[i][0].start);
+        console.log("Object Length: " + Object.keys(lapHistory[i]).length);
+    }
+
+
+
+    // Create a new row
+    let div = document.createElement("div");
+    div.className = "run_div";
+    parent_div.prepend(div);
+
+    //Display the run name
+    let span = document.createElement("span");
+    span.className = "run_label";
+    span.innerText = "3200m @ 12/31 12:00 PM";
+    div.appendChild(span);
+
+    //Display the run time
+    span = document.createElement("span");
+    span.className = "run_time";
+    span.innerText = "00:00";
+    div.appendChild(span);
+}

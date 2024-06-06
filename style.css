@@ -180,6 +180,38 @@ button {
     margin-bottom: .8rem;
 }
 
+/* SAVED RUNS */
+#saved_runs {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.run_div {
+    font-size: 1.5rem;
+    width: 96%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1.5rem 0;
+}
+
+.run_label {
+    opacity: 0.6;
+    text-align: left;
+}
+
+.run_time {
+    font-weight: 600;
+    text-align: right;
+}
+
+
 
 /* LAP HISTORY */
 #lap_history {

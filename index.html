@@ -29,7 +29,7 @@
 
     <!-- BEGIN: Header and Navigation -->
     <div class="logo-container">
-        <a href="index.html"><img src="/logo-dark.png" alt="Logo" class="logo"></a>
+        <a href="index.html"><img src="./logo-dark.png" alt="Logo" class="logo"></a>
     </div>
     <div class="navigation">
         <div id="menuToggle">
@@ -39,7 +39,7 @@
             <span></span>
             <ul id="menu">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="history.html">History</a></li>
+                <li><a onclick="viewSavedRuns();">History</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
         </div>
@@ -144,6 +144,12 @@
         </div>
 
         <div id="lap_history"></div>
+
+        <div id="saved_runs"></div>
+
+
+
+
         <script src="./script.js?v5"></script>
 </body>
 
