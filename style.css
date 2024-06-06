@@ -3,25 +3,28 @@
     grid-template-rows: auto auto;
     grid-template-columns: 1fr 1fr;
     gap: .1em 3em;
-    justify-items: center; /* Horizontally center align the content */
-    align-items: center; /* Vertically center align the content */
-  }
-  
-  .grid-top,
-  .grid-bottom {
-    text-align: center; /* Optionally center align the text within the divs */
-  }
+    justify-items: center;
+    /* Horizontally center align the content */
+    align-items: center;
+    /* Vertically center align the content */
+}
+
+.grid-top,
+.grid-bottom {
+    text-align: center;
+    /* Optionally center align the text within the divs */
+}
 
 
 body {
     font-family: 'Lato', sans-serif;
     font-size: 16px;
     color: white;
-    background-color: #202020;    
+    background-color: #202020;
+    margin: 0;
 }
 
 .container {
-    margin: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,8 +38,10 @@ body {
     justify-content: space-between;
 }
 
-.h1, .h2, .h3 .h4 {
-    font-size:1rem;
+.h1,
+.h2,
+.h3 .h4 {
+    font-size: 1rem;
 }
 
 .h1 {
@@ -61,7 +66,10 @@ body {
     opacity: 0.6;
 }
 
-#estimated_time, #lap_time, #target_time, #target_lap {
+#estimated_time,
+#lap_time,
+#target_time,
+#target_lap {
     color: white;
     font-size: 3.5rem;
 }
@@ -89,16 +97,23 @@ button {
     width: 100%;
 }
 
-.lap, .resume, .finish {
+.lap,
+.resume,
+.finish {
     width: 70%;
 }
 
-.pause, .reset {
+.pause,
+.reset {
     width: 25%;
     background-color: rgb(75, 75, 75);
 }
 
-#actionButton2, #target_lap, #target_lap_header, #target_time, #target_time_header {
+#actionButton2,
+#target_lap,
+#target_lap_header,
+#target_time,
+#target_time_header {
     display: none;
 }
 
@@ -125,7 +140,8 @@ button {
     outline: 2px solid #2e8ece;
 }
 
-#settings, #feedback {
+#settings,
+#feedback {
     width: 100%;
     margin-top: 2rem;
     display: flex;
@@ -145,7 +161,7 @@ button {
 }
 
 .settings_name {
-    
+
     width: 40%;
     text-align: left;
 }
@@ -240,8 +256,3 @@ button {
     cursor: pointer;
     margin: .5rem;
 }
-
-
-
-
-

@@ -393,6 +393,7 @@ function finish() {
 
     console.log("------ Finish ------");
     console.log(laps);
+    saveLapHistory();
 }
 
 function reset() {
@@ -711,3 +712,33 @@ actionButton2.addEventListener("click", handleActionButton);
 
 // Run applySettings() to get everything setup!
 applySettings();
+
+
+function saveLapHistory() {
+    // Get the lapHistory from localStorage
+    var lapHistory = [];
+    var lapHistoryString = localStorage.getItem('lapHistory');
+    if (lapHistoryString != null) {
+        lapHistory = JSON.parse(lapHistoryString);
+    }
+
+    // Format start date of the most recent race to MM/DD/YYYY HH:MM:SS PM
+    const date = laps[0].start;
+    const padZero = (value) => value.toString().padStart(2, '0');
+    const get12HourFormat = (hours) => (hours % 12 || 12);
+    const getAmPm = (hours) => (hours >= 12 ? 'PM' : 'AM');
+    const formattedDate = `${padZero(date.getMonth() + 1)}/${padZero(date.getDate())}/${date.getFullYear()} ${get12HourFormat(date.getHours())}:${padZero(date.getMinutes())}:${padZero(date.getSeconds())} ${getAmPm(date.getHours())}`;
+    
+    // Add a label for this set of laps
+    const lapHistoryName = settings.race + " - " + formattedDate;
+
+    // Add this set of laps to the lapHistory array
+    const newLapEntry = { ...laps, label: lapHistoryName };
+    lapHistory.push(newLapEntry);
+
+    // Save the lapHistory to localStorage
+    lapHistoryString = JSON.stringify(lapHistory);
+    localStorage.setItem('lapHistory', lapHistoryString);
+}
+
+
