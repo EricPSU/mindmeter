@@ -22,14 +22,15 @@ body {
     color: white;
     background-color: #202020;
     margin: 0;
+    max-width: 600px;
 }
 
-.container {
+#timer,
+#race-details {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    max-width: 500px;
 }
 
 .content {
@@ -40,7 +41,8 @@ body {
 
 .h1,
 .h2,
-.h3 .h4 {
+.h3,
+.h4 {
     font-size: 1rem;
 }
 
@@ -57,7 +59,7 @@ body {
     width: 100%;
 }
 
-#time {
+.stopwatch {
     font-size: 4rem;
     color: #2e8ece;
 }
@@ -66,10 +68,10 @@ body {
     opacity: 0.6;
 }
 
-#estimated_time,
-#lap_time,
-#target_time,
-#target_lap {
+#estimate-time,
+#lap-time,
+#target-time,
+#target-lap {
     color: white;
     font-size: 3.5rem;
 }
@@ -110,10 +112,10 @@ button {
 }
 
 #actionButton2,
-#target_lap,
-#target_lap_header,
-#target_time,
-#target_time_header {
+#target-lap,
+#target-lap-header,
+#target-time,
+#target-time-header {
     display: none;
 }
 
@@ -140,10 +142,9 @@ button {
     outline: 2px solid #2e8ece;
 }
 
-#settings,
-#feedback {
+#settings {
     width: 100%;
-    margin-top: 2rem;
+    margin: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -151,7 +152,7 @@ button {
 }
 
 
-.settings_div {
+.settings-div {
     font-size: 1.5rem;
     width: 96%;
     display: flex;
@@ -160,19 +161,19 @@ button {
     padding: 0.5rem 0;
 }
 
-.settings_name {
+.settings-name {
 
     width: 40%;
     text-align: left;
 }
 
-.settings_value {
+.settings-value {
     font-weight: 600;
     width: 60%;
     text-align: right;
 }
 
-.settings_description {
+.settings-description {
     opacity: 0.6;
     width: 96%;
     text-align: left;
@@ -181,7 +182,7 @@ button {
 }
 
 /* SAVED RUNS */
-#saved_runs {
+#history {
     width: 100%;
     margin-top: 2rem;
     display: flex;
@@ -191,30 +192,49 @@ button {
     overflow-y: auto;
 }
 
-.run_div {
+
+
+
+
+
+/* RACE HISTORY LIST */
+.summary-div {
+    display: flex;
+    flex-direction: row;
     font-size: 1.5rem;
     width: 96%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
     padding: 1.5rem 0;
 }
 
-.run_label {
-    opacity: 0.6;
-    text-align: left;
+.summary-left-col {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
 }
 
-.run_time {
+.summary-time {
+    width: 25%;
     font-weight: 600;
     text-align: right;
+    margin: auto;
+}
+
+.summary-name {
+    color: #2e8ece;
+}
+
+.summary-date {
+    opacity: 0.6;
 }
 
 
 
-/* LAP HISTORY */
-#lap_history {
+
+
+/* LAP HISTORY LIST */
+#lap-history,
+#race-details-laps {
     width: 100%;
     margin-top: 2rem;
     display: flex;
@@ -224,7 +244,7 @@ button {
     overflow-y: auto;
 }
 
-.lap_div {
+.lap-div {
     font-size: 1.5rem;
     width: 96%;
     display: flex;
@@ -234,49 +254,53 @@ button {
     padding: 0.5rem 0;
 }
 
-.lap_num {
+.lap-num {
     opacity: 0.6;
     width: 25%;
     text-align: left;
 }
 
-.lap_delta_faster {
+.lap-delta-faster {
     color: green;
     width: 25%;
     text-align: right;
 }
 
-.lap_delta_slower {
+.lap-delta-slower {
     color: red;
     width: 25%;
     text-align: right;
 }
 
-.lap_split {
+.lap-split {
     font-weight: 600;
     width: 25%;
     text-align: right;
 }
 
-.lap_time {
+.lap-time {
     opacity: 0.6;
     width: 25%;
     text-align: right;
 }
 
-.relay_runner {
+
+
+
+/* RELAY HISTORY LIST */
+.relay-runner {
     opacity: 0.6;
     width: 50%;
     text-align: left;
 }
 
-.relay_time {
+.relay-time {
     font-weight: 600;
     width: 50%;
     text-align: right;
 }
 
-.time_button {
+.time-button {
     outline: none;
     border: none;
     font-size: 1rem;
@@ -287,4 +311,47 @@ button {
     outline-offset: 0.2rem;
     cursor: pointer;
     margin: .5rem;
+}
+
+
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    color: white;
+    display: none;
+}
+
+#splash-content {
+    background-color: #1a1a1a;
+    margin-right: 25px;
+    border-radius: 15px;
+    text-align: center;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 25px;
+    padding-bottom: 35px;
+}
+
+#splash-confirm {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 2em;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 70%
 }

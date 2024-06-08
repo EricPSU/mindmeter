@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Omega Minds - MindMeter</title>
-    <link rel="stylesheet" href="./style.css?v5">
-    <link rel="stylesheet" href="./menu.css?v5">
+    <link rel="stylesheet" href="./style.css?v7">
+    <link rel="stylesheet" href="./menu.css?v7">
     <script src="https://kit.fontawesome.com/446f7c5010.js" crossorigin="anonymous"></script>
 </head>
 
@@ -18,12 +18,8 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-YPCL3H7ZKK');
 </script>
-
-
-
 
 <body>
 
@@ -33,36 +29,46 @@
     </div>
     <div class="navigation">
         <div id="menuToggle">
-            <input type="checkbox" />
+            <input id="menuAction" type="checkbox" />
             <span></span>
             <span></span>
             <span></span>
             <ul id="menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a onclick="viewSavedRuns();">History</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a onClick="document.getElementById('menuAction').click(); goToView('timer');">Timer</a></li>
+                <li><a onclick="document.getElementById('menuAction').click(); goToView('history');">History</a></li>
+                <!--<li><a onClick="document.getElementById('menuAction').click();">About</a></li>-->
             </ul>
         </div>
     </div>
     <!-- END: Header and Navigation -->
 
+    <div id="splash-screen">
+        <div id="splash-content">
+            <h1>New Features <i class="fa-regular fa-comments"></i></h1>
+            <p style="padding:25px;font-size:1.3em;">Better at the end of the season than never! I added the ability
+                to view previous race history. After you finish a race, the
+                data is stored on your phone. Check it out via the menu on
+                the upper left. <br> <br> Go Bullseye!</p>
+            <button id="splash-confirm" onclick="splashAcknowledge();">Let's Run!</button>
+        </div>
+    </div>
 
-    <div class="container">
-        <label id="time">00:00:000</label>
-        <label id="race_name" class="h1">TOTAL TIME</label>
+    <div id="timer">
+        <label id="time" class="stopwatch">00:00:000</label>
+        <label id="race-name" class="h1">TOTAL TIME</label>
 
-        <div id="lap_time_grid" class="grid">
-            <div id="target_lap" class="grid-top target">00:00</div>
-            <div id="lap_time" class="grid-top">00:00</div>
-            <div id="target_lap_header" class="grid-bottom h2 target">TARGET LAP SPLIT</div>
-            <div id="lap_header" class="grid-bottom h2">LAP TIME</div>
+        <div id="lap-time-grid" class="grid">
+            <div id="target-lap" class="grid-top target">00:00</div>
+            <div id="lap-time" class="grid-top">00:00</div>
+            <div id="target-lap-header" class="grid-bottom h2 target">TARGET LAP SPLIT</div>
+            <div id="lap-header" class="grid-bottom h2">LAP TIME</div>
         </div>
 
-        <div id="estimated_time_grid" class="grid">
-            <div id="target_time" class="grid-top target">00:00</div>
-            <div id="estimated_time" class="grid-top">00:00</div>
-            <div id="target_time_header" class="grid-bottom h2 target">TARGET TIME</div>
-            <div id="estimated_time_header" class="grid-bottom h2">ESTIMATED TIME</div>
+        <div id="estimate-time-grid" class="grid">
+            <div id="target-time" class="grid-top target">00:00</div>
+            <div id="estimate-time" class="grid-top">00:00</div>
+            <div id="target-time-header" class="grid-bottom h2 target">TARGET TIME</div>
+            <div id="estimate-time-header" class="grid-bottom h2">ESTIMATED TIME</div>
         </div>
 
         <div class="content">
@@ -70,87 +76,90 @@
             <button id="actionButton2"></button>
         </div>
 
-        <div id="splash_screen">
-            <div id="settings">
-                <label class="h3">Settings</label>
+        <div id="settings">
+            <label class="h3">Settings</label>
 
-                <div class="settings_div">
-                    <div class="settings_name">Track Event</div>
-                    <div class="settings_value">
-                        <select id="settings_race">
-                            <option value="800m">800 Meter</option>
-                            <option value="1500m" selected>1500 Meter</option>
-                            <option value="1600m">1600 Meter</option>
-                            <option value="3000m">3000 Meter</option>
-                            <option value="3200m">3200 Meter</option>
-                            <option value="4x800m">4x800 Meter Relay</option>
-                        </select>
-                    </div>
+            <div class="settings-div">
+                <div class="settings-name">Track Event</div>
+                <div class="settings-value">
+                    <select id="settings-race">
+                        <option value="800m">800 Meter</option>
+                        <option value="1500m" selected>1500 Meter</option>
+                        <option value="1600m">1600 Meter</option>
+                        <option value="3000m">3000 Meter</option>
+                        <option value="3200m">3200 Meter</option>
+                        <option value="4x800m">4x800 Meter Relay</option>
+                    </select>
                 </div>
-                <div class="settings_description">Select the event you would like to measure. If I am missing any other
-                    events please let me know!
-                </div>
-
-                <div class="settings_div">
-                    <div class="settings_name">Lap Distance</div>
-                    <div class="settings_value">
-                        <select id="settings_lap_distance">
-                            <option value="200">200 Meters</option>
-                            <option value="400" selected>400 Meters</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="settings_description">The lap distance establishes where on the track you will capture
-                    your splits. This will also define the number of laps.</div>
-
-                <div class="settings_div">
-                    <div class="settings_name">Partial Lap</div>
-                    <div class="settings_value">
-                        <select id="settings_partial_lap">
-                            <option value="FIRST" selected>First Lap</option>
-                            <option value="LAST">Last Lap</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="settings_description">For events that have laps that don't go the full 400 meters, such as
-                    the 1500 and 3000. Define if you want the 300 meter "partial lap" to be captured as the first
-                    or last lap. The lap pace for the partial lap is increased as if it were 400m.</div>
-
-                <div class="settings_div">
-                    <div class="settings_name">Target Time</div>
-                    <div class="settings_value">
-                        <div class="dropdowns">
-                            <select id="minutes">
-                                <option value=""></option>
-                            </select>:
-                            <select id="seconds">
-                                <option value=""></option>
-                            </select>
-                            <button class="time_button" id="clearButton">Clear</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="settings_description">Establishing a target finish time will display a
-                    target lap split that updates based on the pace of the previous lap. Press clear
-                    if you want to remove this setting value.</div>
+            </div>
+            <div class="settings-description">Select the event you would like to measure. If I am missing any
+                other
+                events please let me know!
             </div>
 
-            <div id="feedback">
-                <label class="h3">Feedback</label>
-                <div class="settings_description">Thanks for all of your feedback! I still plan to provide a
-                    way for you to see previous history. I am also trying to figure out a good design for one
-                    coach tracking up to 5 runners at the same time.</div>
+            <div class="settings-div">
+                <div class="settings-name">Lap Distance</div>
+                <div class="settings-value">
+                    <select id="settings-lap-distance">
+                        <option value="200">200 Meters</option>
+                        <option value="400" selected>400 Meters</option>
+                    </select>
+                </div>
             </div>
+            <div class="settings-description">The lap distance establishes where on the track you will capture
+                your splits. This will also define the number of laps.</div>
+
+            <div class="settings-div">
+                <div class="settings-name">Partial Lap</div>
+                <div class="settings-value">
+                    <select id="settings-partial-lap">
+                        <option value="FIRST" selected>First Lap</option>
+                        <option value="LAST">Last Lap</option>
+                    </select>
+                </div>
+            </div>
+            <div class="settings-description">For events that have laps that don't go the full 400 meters, such
+                as
+                the 1500 and 3000. Define if you want the 300 meter "partial lap" to be captured as the first
+                or last lap. The lap pace for the partial lap is increased as if it were 400m.</div>
+
+            <div class="settings-div">
+                <div class="settings-name">Target Time</div>
+                <div class="settings-value">
+                    <div class="dropdowns">
+                        <select id="minutes">
+                            <option value=""></option>
+                        </select>:
+                        <select id="seconds">
+                            <option value=""></option>
+                        </select>
+                        <button class="time-button" id="clearButton">Clear</button>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-description">Establishing a target finish time will display a
+                target lap split that updates based on the pace of the previous lap. Press clear
+                if you want to remove this setting value.</div>
         </div>
 
-        <div id="lap_history"></div>
+        <div id="lap-history"></div>
+    </div>
 
-        <div id="saved_runs"></div>
+    <div id="history"></div>
+    <div id="race-details">
+        <label id="race-details-time" class="stopwatch">567</label>
+        <label id="race-details-name" class="h1">4567</label>
+        <label id="race-details-date" class="h1">4765</label>
+        <div id="race-details-laps"></div>
+        <div class="content">
+            <button id="race-details-delete" class="pause"><i class="fa-solid fa-trash"></i></button>
+            <button id="race-details-back" class="lap" onclick="goToView('history');">Back</button>
+        </div>
+    </div>
 
 
 
-
-        <script src="./script.js?v5"></script>
+    <script src="./script.js?v7"></script>
 </body>
 
 </html>
