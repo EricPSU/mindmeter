@@ -22,30 +22,33 @@
 </script>
 
 <body>
-
     <!-- BEGIN: Header and Navigation -->
-    <div class="logo-container">
-        <a href="index.html"><img src="./logo-dark.png" alt="Logo" class="logo"></a>
-    </div>
-    <div class="navigation">
-        <div id="menuToggle">
-            <input id="menuAction" type="checkbox" />
-            <span></span>
-            <span></span>
-            <span></span>
-            <ul id="menu">
-                <li><a onClick="document.getElementById('menuAction').click(); goToView('timer');">Timer</a></li>
-                <li><a onclick="document.getElementById('menuAction').click(); goToView('history');">History</a></li>
-                <!--<li><a onClick="document.getElementById('menuAction').click();">About</a></li>-->
+    <div id="navigation-bar">
+        <div id="navigation-icon">
+            <div class="navigation-hamburger"></div>
+            <div class="navigation-hamburger"></div>
+            <div class="navigation-hamburger"></div>
+        </div>
+        <div id="navigation-logo"><img src="./logo-dark.png" height="50px"></div>
+        <div id="navigation-sidebar">
+            <div id="navigation-close">&#10005;</div>
+            <ul>
+                <li onclick="navClose.click();goToView('timer');">Timer</li>
+                <li onclick="navClose.click();goToView('history');">History</li>
+                <li onclick="navClose.click();">About</li>
             </ul>
         </div>
+        <div id="navigation-sidebar-overlay"></div>
     </div>
+    
     <!-- END: Header and Navigation -->
+
+
 
     <div id="splash-screen">
         <div id="splash-content">
             <h1>New Features <i class="fa-regular fa-comments"></i></h1>
-            <p style="padding:25px;font-size:1.3em;">Better at the end of the season than never! I added the ability
+            <p style="font-size:1.3em;">Better at the end of the season than never! I added the ability
                 to view previous race history. After you finish a race, the
                 data is stored on your phone. Check it out via the menu on
                 the upper left. <br> <br> Go Bullseye!</p>

@@ -633,6 +633,28 @@ initializeSettingsFromCookie();
 // ########## EVENT LISTENERS ###########
 // ######################################
 
+// Navigation Menu
+const navIcon = document.getElementById('navigation-icon');
+const navSideBar = document.getElementById('navigation-sidebar');
+const navClose = document.getElementById('navigation-close');
+const navOverlay = document.getElementById('navigation-sidebar-overlay');
+
+navIcon.addEventListener('click', () => {
+    navSideBar.classList.add('open');
+    navOverlay.classList.add('show');
+});
+
+navClose.addEventListener('click', () => {
+    navSideBar.classList.remove('open');
+    navOverlay.classList.remove('show');
+});
+
+navOverlay.addEventListener('click', () => {
+    navSideBar.classList.remove('open');
+    navOverlay.classList.remove('show');
+});
+
+
 //Setting: Race
 var settings_race = document.getElementById("settings-race");
 settings_race.addEventListener("change", function () {
@@ -678,16 +700,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Set default values
     minutesDropdown.value = convertToTwoDigitString(Math.floor(settings.targetTime / 60));
     secondsDropdown.value = convertToTwoDigitString(Math.round(settings.targetTime % 60));
-
-    /* Event handler for set button
-    setButton.addEventListener('click', function() {
-      var selectedMinutes = minutesDropdown.value;
-      var selectedSeconds = secondsDropdown.value;
-      console.log('Target Time updated to:', selectedMinutes + ':' + selectedSeconds);
-      settings.targetTime = (Number(selectedMinutes) * 60) + Number(selectedSeconds);
-      applySettings();
-    });
-    */
 
     minutesDropdown.addEventListener('change', function () {
         var selectedMinutes = minutesDropdown.value;
@@ -918,7 +930,7 @@ function goToView(view) {
             document.getElementById("timer").style.display = "flex";
             document.getElementById("history").style.display = "none";
             document.getElementById("race-details").style.display = "none";
-            break;
+             break;
         case 'history':
             document.getElementById("timer").style.display = "none";
             document.getElementById("history").style.display = "flex";
