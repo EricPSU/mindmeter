@@ -22,7 +22,6 @@
 </script>
 
 <body>
-    <!-- BEGIN: Header and Navigation -->
     <div id="navigation-bar">
         <div id="navigation-icon">
             <div class="navigation-hamburger"></div>
@@ -40,41 +39,51 @@
         </div>
         <div id="navigation-sidebar-overlay"></div>
     </div>
-    
-    <!-- END: Header and Navigation -->
-
-
 
     <div id="splash-screen">
         <div id="splash-content">
             <h1>New Features <i class="fa-regular fa-comments"></i></h1>
-            <p style="font-size:1.3em;">Better at the end of the season than never! I added the ability
-                to view previous race history. After you finish a race, the
-                data is stored on your phone. Check it out via the menu on
-                the upper left. <br> <br> Go Bullseye!</p>
-            <button id="splash-confirm" onclick="splashAcknowledge();">Let's Run!</button>
+            <p style="font-size:1.3em;">Added the ability to view previous race history.
+                After you finish a race, the data is stored on your phone. Check it out
+                via the menu on the upper left.</p>
+            <button id="splash-confirm" onclick="acknowledgeSplash();">Let's Run!</button>
         </div>
     </div>
 
     <div id="timer">
-        <label id="time" class="stopwatch">00:00:000</label>
-        <label id="race-name" class="h1">TOTAL TIME</label>
+        <label id="timer-time" class="stopwatch">00:00:000</label>
+        <label id="timer-sub-heading" class="h1">TOTAL TIME</label>
 
-        <div id="lap-time-grid" class="grid">
-            <div id="target-lap" class="grid-top target">00:00</div>
-            <div id="lap-time" class="grid-top">00:00</div>
-            <div id="target-lap-header" class="grid-bottom h2 target">TARGET LAP SPLIT</div>
-            <div id="lap-header" class="grid-bottom h2">LAP TIME</div>
+        <div id="timer-metrics" class="container">
+            <div id="timer-target-metrics" class="column">
+                <div class="row">
+                    <h1 id="timer-target-split">00:00</h1>
+                    <h2>TARGET SPLIT</h2>
+                </div>
+                <div class="row">
+                    <h1 id="timer-target-time">00:00</h1>
+                    <h2>TARGET TIME</h2>
+                </div>
+            </div>
+            <div id="timer-lap-metrics" class="column">
+                <div class="row">
+                    <h1 id="timer-lap-time">00:00</h1>
+                    <h2 id="timer-lap">LAP TIME</h2>
+                </div>
+                <div class="row">
+                    <h1 id="timer-estimated-time">00:00</h1>
+                    <h2>ESTIMATED TIME</h2>
+                </div>
+            </div>
         </div>
 
-        <div id="estimate-time-grid" class="grid">
-            <div id="target-time" class="grid-top target">00:00</div>
-            <div id="estimate-time" class="grid-top">00:00</div>
-            <div id="target-time-header" class="grid-bottom h2 target">TARGET TIME</div>
-            <div id="estimate-time-header" class="grid-bottom h2">ESTIMATED TIME</div>
-        </div>
 
-        <div class="content">
+
+
+
+
+
+        <div class="button-container">
             <button id="actionButton1" class="start">Start</button>
             <button id="actionButton2"></button>
         </div>
@@ -148,17 +157,20 @@
         <div id="lap-history"></div>
     </div>
 
-    <div id="history"></div>
-    <div id="race-details">
-        <label id="race-details-time" class="stopwatch">567</label>
-        <label id="race-details-name" class="h1">4567</label>
-        <label id="race-details-date" class="h1">4765</label>
-        <div id="race-details-laps"></div>
-        <div class="content">
-            <button id="race-details-delete" class="pause"><i class="fa-solid fa-trash"></i></button>
-            <button id="race-details-back" class="lap" onclick="goToView('history');">Back</button>
+    <div id="history">
+        <div id="history-list"></div>
+        <div id="history-details">
+            <label id="history-details-time" class="stopwatch"></label>
+            <label id="history-details-name" class="h1"></label>
+            <label id="history-details-date" class="h1"></label>
+            <div id="history-details-laps"></div>
+            <div class="button-container">
+                <button id="history-details-delete" class="pause"><i class="fa-solid fa-trash"></i></button>
+                <button id="history-details-back" class="lap" onclick="goToView('history-list');">Back</button>
+            </div>
         </div>
     </div>
+
 
 
 

@@ -87,84 +87,6 @@ function initializeObjectFromCookie(cookieName) {
     return null;
 }
 
-// ######################################
-// ########## HELPER FUNCTIONS ##########
-// ######################################
-
-
-/* Function checks if the value is an integer and the remainder of 
-dividing it by 1 is 0.  Returns a boolean. */
-function isWholeNumber(value) {
-    return Number.isInteger(value) && value % 1 === 0;
-}
-
-/* Function transforms seconds into minutes:seconds. Input is a number 
-of seconds and output is formatted for time. Returns a string. */
-function formatTimeSeconds(totalSeconds) {
-    let minutes = Math.floor(totalSeconds / 60);
-    let seconds = Math.floor(totalSeconds % 60);
-    let formattedMinutes = String(minutes).padStart(2, '0');
-    let formattedSeconds = String(seconds).padStart(2, '0');
-    return `${formattedMinutes}:${formattedSeconds}`;
-}
-
-// Function to convert a number into a two digit string
-function convertToTwoDigitString(number) {
-    var str = number.toString();
-
-    // Add a leading zero if the number is less than 10
-    if (number < 10) {
-        str = "0" + str;
-    }
-
-    return str;
-}
-
-/* Function converts milliseconds into HH:MM:SS.MMM with an option to
-no include milliseconds.  Milliseconds is the default */
-function formatTime(milliseconds, includeMilliseconds = true) {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(seconds).padStart(2, '0');
-
-    if (includeMilliseconds) {
-        const formattedMilliseconds = String(milliseconds % 1000).padStart(3, '0');
-        return `${formattedMinutes}:${formattedSeconds}:${formattedMilliseconds}`;
-    } else {
-        return `${formattedMinutes}:${formattedSeconds}`;
-    }
-}
-
-// Formats a date object into different formats
-function formatDate(dateObj, format) {
-    // Check if dateObj is a valid Date instance
-    if (!(dateObj instanceof Date) || isNaN(dateObj.getTime())) {
-        return 'Invalid Date';
-    }
-
-    const formatRegex = /\w+/g;
-    const formatters = {
-        YYYY: dateObj.getFullYear(),
-        YY: dateObj.getFullYear().toString().slice(-2),
-        MMMM: dateObj.toLocaleString('default', { month: 'long' }),
-        MMM: dateObj.toLocaleString('default', { month: 'short' }),
-        MM: String(dateObj.getMonth() + 1).padStart(2, '0'),
-        DD: String(dateObj.getDate()).padStart(2, '0'),
-        HH: String(dateObj.getHours()).padStart(2, '0'),
-        hh: String(((dateObj.getHours() + 11) % 12) + 1),
-        mm: String(dateObj.getMinutes()).padStart(2, '0'),
-        ss: String(dateObj.getSeconds()).padStart(2, '0'),
-        A: dateObj.getHours() >= 12 ? 'PM' : 'AM',
-        a: dateObj.getHours() >= 12 ? 'pm' : 'am',
-        ddd: dateObj.toLocaleString('default', { weekday: 'short' })
-    };
-
-    return format.replace(formatRegex, (match) => {
-        return formatters[match] || match;
-    });
-}
 
 
 
@@ -192,7 +114,7 @@ function start() {
         timerDelta = timerDelta - timerPause;
 
         // Display the overall time
-        document.getElementById("time").innerText = formatTime(timerDelta);
+        document.getElementById("timer-time").innerText = formatTime(timerDelta);
 
         // Store the total seconds
         timerSeconds = timerDelta / 1000;
@@ -200,7 +122,7 @@ function start() {
         //Display current lap time
         let currentSplit = (timerCurrentDate - laps[currentLap - 1].start);
         currentSplit = currentSplit - laps[currentLap - 1].pause; //Account for any pause duration in the lap
-        document.getElementById("lap-time").innerText = formatTime(currentSplit, false);
+        document.getElementById("timer-lap-time").innerText = formatTime(currentSplit, false);
     }, 10);
     //Make this 10 for PROD
 
@@ -374,13 +296,13 @@ function lap() {
     addRelayHistory();
 
     // Update remaining meters
-    document.getElementById("race-name").innerHTML = race.name + " | REMAINING: " + remainingMeters + "m";
+    document.getElementById("timer-sub-heading").innerHTML = race.name + " | REMAINING: " + remainingMeters + "m";
 
     // Update estimated time
-    document.getElementById("estimate-time").innerText = formatTimeSeconds(laps[currentLap - 1].estimateTime);
+    document.getElementById("timer-estimated-time").innerText = formatTimeSeconds(laps[currentLap - 1].estimateTime);
 
     // Update lap number
-    document.getElementById("lap-header").innerText = "LAP " + (currentLap + 1) + " of " + race.laps;
+    document.getElementById("timer-lap").innerText = "LAP " + (currentLap + 1) + " of " + race.laps;
 
     // Update label for actionButton2 to "Finish" for last lap
     if (currentLap == race.laps - 1) {
@@ -422,7 +344,7 @@ function finish() {
     addRelayHistory();
 
     //Update remaining meters
-    document.getElementById("race-name").innerHTML = race.name;
+    document.getElementById("timer-sub-heading").innerHTML = race.name;
 
     actionButton1.className = "reset";
     actionButton1.innerHTML = '<i class="fa-solid fa-rotate"></i>';
@@ -442,11 +364,11 @@ function reset() {
     currentLap = 1;
     lap_history_div.innerHTML = "";
 
-    document.getElementById("time").innerText = "00:00:000";
-    document.getElementById("lap-time").innerText = "00:00";
-    document.getElementById("estimate-time").innerText = "00:00";
-    document.getElementById("race-name").innerHTML = race.name;
-    document.getElementById("lap-header").innerText = "Lap 1 of " + race.laps;
+    document.getElementById("timer-time").innerText = "00:00:000";
+    document.getElementById("timer-lap-time").innerText = "00:00";
+    document.getElementById("timer-estimated-time").innerText = "00:00";
+    document.getElementById("timer-sub-heading").innerHTML = race.name;
+    document.getElementById("timer-lap").innerText = "Lap 1 of " + race.laps;
     document.getElementById("settings").style.display = "flex"; // Display options
 
     actionButton1.innerText = "Start";  // Rename the start/resume button
@@ -505,22 +427,11 @@ function updateTargetLapPace() {
 
         console.log("laps[currentLap - 1].targetSplit: " + laps[currentLap - 1].targetSplit);
 
-        document.getElementById("target-lap").innerText = formatTimeSeconds(laps[currentLap - 1].targetSplit);
-        document.getElementById("target-time").innerHTML = formatTimeSeconds(settings.targetTime);
-        document.getElementById("lap-time-grid").style.display = "grid";
-        document.getElementById("estimate-time-grid").style.display = "grid";
-        document.getElementById("target-lap").style.display = "flex";
-        document.getElementById("target-lap-header").style.display = "flex";
-        document.getElementById("target-time").style.display = "flex";
-        document.getElementById("target-time-header").style.display = "flex";
-
+        document.getElementById("timer-target-split").innerText = formatTimeSeconds(laps[currentLap - 1].targetSplit);
+        document.getElementById("timer-target-time").innerHTML = formatTimeSeconds(settings.targetTime);
+        document.getElementById("timer-target-metrics").style.display = "block";
     } else {
-        document.getElementById("lap-time-grid").style.display = "block";
-        document.getElementById("estimate-time-grid").style.display = "block";
-        document.getElementById("target-lap").style.display = "none";
-        document.getElementById("target-lap-header").style.display = "none";
-        document.getElementById("target-time").style.display = "none";
-        document.getElementById("target-time-header").style.display = "none";
+        document.getElementById("timer-target-metrics").style.display = "none";
     }
 }
 
@@ -570,7 +481,7 @@ function applySettings() {
             race.lastLapMeters = 400;
             break;
     }
-    document.getElementById("race-name").innerHTML = race.name;
+    document.getElementById("timer-sub-heading").innerHTML = race.name;
 
     // Initialize remainingMeters
     remainingMeters = race.meters;
@@ -591,7 +502,7 @@ function applySettings() {
 
     // Target Time: Estimate lap pace and display target time
     //document.getElementById("est_finish").innerHTML = "Estimated Finish";
-    document.getElementById("lap-header").innerText = "LAP 1 of " + race.laps;
+    document.getElementById("timer-lap").innerText = "LAP 1 of " + race.laps;
     updateTargetLapPace();
 
     // Save settings to cookie
@@ -627,6 +538,341 @@ function initializeSettingsFromCookie() {
     document.getElementById("settings-partial-lap").value = settings.partialLap;
 }
 initializeSettingsFromCookie();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Function gets local storage key and converts string into JSON object
+function getLocalStorage(key) {
+    const valueString = localStorage.getItem(key);
+    let value = [];
+
+    // Check if the key has any value
+    if (valueString != null) {
+        value = JSON.parse(valueString);
+        console.log("Returning local storage value " + key);
+        console.log(value);
+    } else {
+        console.log("No local storage found for " + key);
+    }
+    return value;
+}
+
+// Function stringifys JSON value and saves to local storage as key name
+function saveLocalStorage(key, value) {
+    console.log("Saving local storage value " + key);
+    console.log(value);
+    const valueString = JSON.stringify(value);
+    localStorage.setItem(key, valueString);
+}
+
+// Function grabs latest local storage, adds last race, saves to local storage
+function saveRaceHistory() {
+    // Get the lapHistory from localStorage
+    let raceHistory = [];
+    raceHistory = getLocalStorage("raceHistory");
+
+    // Build the new race entry to add to history
+    const newRaceEntry = {
+        raceId: laps[0].start.getTime(),
+        name: race.name,
+        meters: race.meters,
+        laps: race.laps,
+        time: timerDelta,
+        lapData: laps
+    }
+    console.log("Adding newRaceEntry:");
+    console.log(newRaceEntry);
+
+    // Add the newRaceEntry to the raceHistory
+    raceHistory.push(newRaceEntry);
+
+    // Save the new raceHistory to local storage
+    saveLocalStorage('raceHistory', raceHistory);
+}
+
+function deleteRaceHistory(raceId) {
+    // Get raceHistory from local storage
+    const raceHistory = getLocalStorage("raceHistory");
+
+    // Create a new array with the raceId data filtered out
+    const updatedRaceHistory = raceHistory.filter(race => race.raceId !== raceId);
+
+    // Save the new raceHistory to local storage
+    saveLocalStorage('raceHistory', updatedRaceHistory);
+}
+
+
+// This function displays a list of saved runs
+function displayHistoryList() {
+
+    // Clear any existing history since its all created again
+    document.getElementById('history-list').innerHTML = '';
+
+    // Get raceHistory from local storage
+    const raceHistory = getLocalStorage("raceHistory");
+
+    if (raceHistory.length == 0) {
+        // This is ugly and quick, make it better later
+        document.getElementById('history-list').innerHTML =
+            '<i span style="font-size:5em;padding-top:1em;" class="fa-solid fa-person-running"></i><br><br>' +
+            '<span style="font-size:2em;text-align:center">' +
+            "You don't have any runs saved yet.  Start using that timer!" +
+            "</span>";
+    }
+
+    // Loop through raceHistory to display summary info
+    for (let i = 0; i < raceHistory.length; i++) {
+        console.log('Array Item: ' + i);
+        console.log('raceId: ' + raceHistory[i].raceId);
+        console.log("Name: " + raceHistory[i].name);
+        console.log("Time: " + raceHistory[i].time);
+        console.log("Laps: " + Object.keys(raceHistory[i].lapData).length);
+
+        // Create a new row
+        const summaryDiv = document.createElement('div');
+        summaryDiv.classList.add('history-list-div');
+        summaryDiv.setAttribute('onclick', `displayHistoryDetails(${raceHistory[i].raceId});`); // Add onclick attribute
+
+        // Create the left column div
+        const summaryLeftCol = document.createElement('div');
+        summaryLeftCol.classList.add('history-list-left-col');
+
+        // Create the "Name" div
+        const summaryName = document.createElement('div');
+        summaryName.classList.add('history-list-name');
+        summaryName.textContent = raceHistory[i].name;
+
+        // Create the "Date" div
+        const summaryDate = document.createElement('div');
+        summaryDate.classList.add('history-list-date');
+        summaryDate.textContent = formatDate(new Date(raceHistory[i].lapData[0].start), 'ddd, MMM DD hh:mm a');
+
+        // Append "Name" and "Date" divs to the left column
+        summaryLeftCol.appendChild(summaryName);
+        summaryLeftCol.appendChild(summaryDate);
+
+        // Create the "Time" div
+        const summaryTime = document.createElement('div');
+        summaryTime.classList.add('history-list-time');
+        summaryTime.textContent = formatTime(raceHistory[i].time, false);
+
+        // Append the left column and "Time" div to the main container
+        summaryDiv.appendChild(summaryLeftCol);
+        summaryDiv.appendChild(summaryTime);
+
+        // Add a new row to the history div
+        document.getElementById("history-list").prepend(summaryDiv);
+    }
+}
+
+// Displays the details for an individual race
+function displayHistoryDetails(raceId) {
+
+    console.log('Viewing details for race: ' + raceId);
+    goToView('history-details');
+
+    // Get raceHistory from local storage
+    const raceHistory = getLocalStorage("raceHistory");
+
+    // Find the history for raceId
+    const targetRaceId = raceId;
+    const race = raceHistory.find(race => race.raceId === targetRaceId);
+    console.log(race);
+
+    // Display the data
+    document.getElementById("history-details-time").innerText = formatTime(race.time);
+    document.getElementById("history-details-name").innerText = race.name;
+    document.getElementById("history-details-date").innerText = formatDate(new Date(race.lapData[0].start), 'ddd, MMM DD hh:MM a');;
+    let parentDiv = document.getElementById("history-details-laps");
+    parentDiv.innerHTML = ''; // Clear previous laps
+    race.lapData.forEach((lap, index) => {
+        addLap(parentDiv, index + 1, lap.delta, lap.split, lap.time);
+    });
+
+    // Populate the onclick for the delete button with the raceId
+    const history_details_delete = document.getElementById("history-details-delete");
+    history_details_delete.setAttribute('onclick', `deleteRaceHistory(${raceId});goToView('history-list');`); // Add onclick attribute
+}
+
+function goToView(view) {
+    switch (view) {
+        case 'timer':
+            document.getElementById("timer").style.display = "flex";
+            document.getElementById("history").style.display = "none";
+            break;
+        case 'history':
+            document.getElementById("timer").style.display = "none";
+            document.getElementById("history").style.display = "flex";
+            displayHistoryList();
+            break;
+        case 'history-list':
+            document.getElementById("history-list").style.display = "flex";
+            document.getElementById("history-details").style.display = "none";
+            displayHistoryList();
+            break;
+        case 'history-details':
+            document.getElementById("history-list").style.display = "none";
+            document.getElementById("history-details").style.display = "flex";
+            break;
+    }
+}
+
+function addLap(parentDiv, lapNum, lapDelta, lapSplit, lapTime) {
+    //Create a new lap row in lap history table
+    let lap_div = document.createElement("div");
+    lap_div.className = "lap-div";
+    parentDiv.prepend(lap_div);
+
+    //Display the lap number
+    let lap_span = document.createElement("span");
+    lap_span.className = "lap-num";
+    lap_span.innerText = "Lap " + lapNum;
+    lap_div.appendChild(lap_span);
+
+    //Display the lap delta
+    lap_span = document.createElement("span");
+    if (lapNum == 1) {
+        lap_span.className = "lap-delta-faster";
+        lap_span.innerText = "";
+    } else if (lapDelta <= 0) {
+        lap_span.className = "lap-delta-faster";
+        lap_span.innerText = lapDelta.toFixed(1) + "s";
+    } else {
+        lap_span.className = "lap-delta-slower";
+        lap_span.innerText = "+" + lapDelta.toFixed(1) + "s";
+    }
+    lap_div.appendChild(lap_span);
+
+    //Display the lap split
+    lap_span = document.createElement("span");
+    lap_span.className = "lap-split";
+    lap_span.innerText = formatTimeSeconds(lapSplit);
+    lap_div.appendChild(lap_span);
+
+    //Display the total time
+    lap_span = document.createElement("span");
+    lap_span.className = "lap-time";
+    lap_span.innerText = formatTimeSeconds(lapTime);
+    lap_div.appendChild(lap_span);
+}
+
+// Store that the user acknowledge the splash screen
+function acknowledgeSplash() {
+    saveLocalStorage("confirmSplash", "v2");
+    confirmSplash();
+}
+
+// Display the splash screen for those who haven't acknowledged it
+function confirmSplash() {
+    const confirmSplash = getLocalStorage("confirmSplash");
+    if (confirmSplash == "v2") {
+        document.getElementById("splash-screen").style.display = "none";
+    } else {
+        document.getElementById("splash-screen").style.display = "flex";
+    }
+}
+
+
+
+
+// ######################################
+// ########## HELPER FUNCTIONS ##########
+// ######################################
+
+
+/* Checks if the value is an integer and the remainder of 
+dividing it by 1 is 0.  Returns a boolean. */
+function isWholeNumber(value) {
+    return Number.isInteger(value) && value % 1 === 0;
+}
+
+/* Transforms seconds into minutes:seconds. Input is a number 
+of seconds and output is formatted for time. Returns a string. */
+function formatTimeSeconds(totalSeconds) {
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = Math.floor(totalSeconds % 60);
+    let formattedMinutes = String(minutes).padStart(2, '0');
+    let formattedSeconds = String(seconds).padStart(2, '0');
+    return `${formattedMinutes}:${formattedSeconds}`;
+}
+
+// Converts a number into a two digit string
+function convertToTwoDigitString(number) {
+    var str = number.toString();
+
+    // Add a leading zero if the number is less than 10
+    if (number < 10) {
+        str = "0" + str;
+    }
+
+    return str;
+}
+
+/* Converts milliseconds into HH:MM:SS.MMM with an option to
+no include milliseconds.  Milliseconds is the default */
+function formatTime(milliseconds, includeMilliseconds = true) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+
+    if (includeMilliseconds) {
+        const formattedMilliseconds = String(milliseconds % 1000).padStart(3, '0');
+        return `${formattedMinutes}:${formattedSeconds}:${formattedMilliseconds}`;
+    } else {
+        return `${formattedMinutes}:${formattedSeconds}`;
+    }
+}
+
+// Formats a date object into different formats
+function formatDate(dateObj, format) {
+    // Check if dateObj is a valid Date instance
+    if (!(dateObj instanceof Date) || isNaN(dateObj.getTime())) {
+        return 'Invalid Date';
+    }
+
+    const formatRegex = /\w+/g;
+    const formatters = {
+        YYYY: dateObj.getFullYear(),
+        YY: dateObj.getFullYear().toString().slice(-2),
+        MMMM: dateObj.toLocaleString('default', { month: 'long' }),
+        MMM: dateObj.toLocaleString('default', { month: 'short' }),
+        MM: String(dateObj.getMonth() + 1).padStart(2, '0'),
+        DD: String(dateObj.getDate()).padStart(2, '0'),
+        HH: String(dateObj.getHours()).padStart(2, '0'),
+        hh: String(((dateObj.getHours() + 11) % 12) + 1),
+        mm: String(dateObj.getMinutes()).padStart(2, '0'),
+        ss: String(dateObj.getSeconds()).padStart(2, '0'),
+        A: dateObj.getHours() >= 12 ? 'PM' : 'AM',
+        a: dateObj.getHours() >= 12 ? 'pm' : 'am',
+        ddd: dateObj.toLocaleString('default', { weekday: 'short' })
+    };
+
+    return format.replace(formatRegex, (match) => {
+        return formatters[match] || match;
+    });
+}
 
 
 // ######################################
@@ -763,257 +1009,10 @@ actionButton2.addEventListener("click", handleActionButton);
 
 
 
-
-
-// Function gets local storage key and converts string into JSON object
-function getLocalStorage(key) {
-    const valueString = localStorage.getItem(key);
-    let value = [];
-
-    // Check if the key has any value
-    if (valueString != null) {
-        value = JSON.parse(valueString);
-        console.log("Returning local storage value " + key);
-        console.log(value);
-    } else {
-        console.log("No local storage found for " + key);
-    }
-    return value;
-}
-
-// Function stringifys JSON value and saves to local storage as key name
-function saveLocalStorage(key, value) {
-    console.log("Saving local storage value " + key);
-    console.log(value);
-    const valueString = JSON.stringify(value);
-    localStorage.setItem(key, valueString);
-}
-
-// Function grabs latest local storage, adds last race, saves to local storage
-function saveRaceHistory() {
-    // Get the lapHistory from localStorage
-    let raceHistory = [];
-    raceHistory = getLocalStorage("raceHistory");
-
-    // Build the new race entry to add to history
-    const newRaceEntry = {
-        raceId: laps[0].start.getTime(),
-        name: race.name,
-        meters: race.meters,
-        laps: race.laps,
-        time: timerDelta,
-        lapData: laps
-    }
-    console.log("Adding newRaceEntry:");
-    console.log(newRaceEntry);
-
-    // Add the newRaceEntry to the raceHistory
-    raceHistory.push(newRaceEntry);
-
-    // Save the new raceHistory to local storage
-    saveLocalStorage('raceHistory', raceHistory);
-}
-
-
-// This function displays a list of saved runs
-function generateRunHistory() {
-
-    // Clear any existing history since its all created again
-    document.getElementById('history').innerHTML = '';
-
-    // Get raceHistory from local storage
-    const raceHistory = getLocalStorage("raceHistory");
-
-    if (raceHistory.length == 0) {
-        // This is ugly and quick, make it better later
-        document.getElementById('history').innerHTML =
-            '<i span style="font-size:5em;padding-top:1em;" class="fa-solid fa-person-running"></i><br><br>' +
-            '<span style="font-size:2em;text-align:center">' +
-            "You don't have any runs saved yet.  Start using that timer!" +
-            "</span>";
-    }
-
-    // Loop through raceHistory to display summary info
-    for (let i = 0; i < raceHistory.length; i++) {
-        console.log('Array Item: ' + i);
-        console.log('raceId: ' + raceHistory[i].raceId);
-        console.log("Name: " + raceHistory[i].name);
-        console.log("Time: " + raceHistory[i].time);
-        console.log("Laps: " + Object.keys(raceHistory[i].lapData).length);
-
-        // Create a new row
-        const summaryDiv = document.createElement('div');
-        summaryDiv.classList.add('summary-div');
-        summaryDiv.setAttribute('onclick', `viewRaceDetails(${raceHistory[i].raceId});`); // Add onclick attribute
-
-        // Create the left column div
-        const summaryLeftCol = document.createElement('div');
-        summaryLeftCol.classList.add('summary-left-col');
-
-        // Create the "Name" div
-        const summaryName = document.createElement('div');
-        summaryName.classList.add('summary-name');
-        summaryName.textContent = raceHistory[i].name;
-
-        // Create the "Date" div
-        const summaryDate = document.createElement('div');
-        summaryDate.classList.add('summary-date');
-        summaryDate.textContent = formatDate(new Date(raceHistory[i].lapData[0].start), 'ddd, MMM DD hh:mm a');
-
-        // Append "Name" and "Date" divs to the left column
-        summaryLeftCol.appendChild(summaryName);
-        summaryLeftCol.appendChild(summaryDate);
-
-        // Create the "Time" div
-        const summaryTime = document.createElement('div');
-        summaryTime.classList.add('summary-time');
-        summaryTime.textContent = formatTime(raceHistory[i].time, false);
-
-        // Append the left column and "Time" div to the main container
-        summaryDiv.appendChild(summaryLeftCol);
-        summaryDiv.appendChild(summaryTime);
-
-        // Add a new row to the history div
-        document.getElementById("history").prepend(summaryDiv);
-    }
-}
-
-// Displays the details for an individual race
-function viewRaceDetails(raceId) {
-
-    console.log('Viewing race details for ' + raceId);
-    goToView('race-details');
-
-    // Get raceHistory from local storage
-    const raceHistory = getLocalStorage("raceHistory");
-
-    // Find the history for raceId
-    const targetRaceId = raceId;
-    const race = raceHistory.find(race => race.raceId === targetRaceId);
-    console.log(race);
-
-    // Display the data
-    document.getElementById("race-details-time").innerText = formatTime(race.time);
-    document.getElementById("race-details-name").innerText = race.name;
-    document.getElementById("race-details-date").innerText = formatDate(new Date(race.lapData[0].start), 'ddd, MMM DD hh:MM a');;
-    let parentDiv = document.getElementById("race-details-laps");
-    parentDiv.innerHTML = ''; // Clear previous laps
-    race.lapData.forEach((lap, index) => {
-        addLap(parentDiv, index + 1, lap.delta, lap.split, lap.time);
-    });
-
-    // Populate the onclick for the delete button with the raceId
-    const race_details_delete = document.getElementById("race-details-delete");
-    race_details_delete.setAttribute('onclick', `deleteRaceHistory(${raceId});`); // Add onclick attribute
-}
-
-
-function deleteRaceHistory(raceId) {
-    // Get raceHistory from local storage
-    const raceHistory = getLocalStorage("raceHistory");
-
-    // Create a new array with the raceId data filtered out
-    const updatedRaceHistory = raceHistory.filter(race => race.raceId !== raceId);
-
-    // Save the new raceHistory to local storage
-    saveLocalStorage('raceHistory', updatedRaceHistory);
-
-    // Go back to race history
-    goToView('history');
-}
-
-
-
-function goToView(view) {
-    switch (view) {
-        case 'timer':
-            document.getElementById("timer").style.display = "flex";
-            document.getElementById("history").style.display = "none";
-            document.getElementById("race-details").style.display = "none";
-             break;
-        case 'history':
-            document.getElementById("timer").style.display = "none";
-            document.getElementById("history").style.display = "flex";
-            document.getElementById("race-details").style.display = "none";
-            generateRunHistory();
-            break;
-        case 'race-details':
-            document.getElementById("timer").style.display = "none";
-            document.getElementById("history").style.display = "none";
-            document.getElementById("race-details").style.display = "flex";
-            break;
-    }
-}
-
-
-
-function addLap(parentDiv, lapNum, lapDelta, lapSplit, lapTime) {
-    //Create a new lap row in lap history table
-    let lap_div = document.createElement("div");
-    lap_div.className = "lap-div";
-    parentDiv.prepend(lap_div);
-
-    //Display the lap number
-    let lap_span = document.createElement("span");
-    lap_span.className = "lap-num";
-    lap_span.innerText = "Lap " + lapNum;
-    lap_div.appendChild(lap_span);
-
-    //Display the lap delta
-    lap_span = document.createElement("span");
-    if (lapNum == 1) {
-        lap_span.className = "lap-delta-faster";
-        lap_span.innerText = "";
-    } else if (lapDelta <= 0) {
-        lap_span.className = "lap-delta-faster";
-        lap_span.innerText = lapDelta.toFixed(1) + "s";
-    } else {
-        lap_span.className = "lap-delta-slower";
-        lap_span.innerText = "+" + lapDelta.toFixed(1) + "s";
-    }
-    lap_div.appendChild(lap_span);
-
-    //Display the lap split
-    lap_span = document.createElement("span");
-    lap_span.className = "lap-split";
-    lap_span.innerText = formatTimeSeconds(lapSplit);
-    lap_div.appendChild(lap_span);
-
-    //Display the total time
-    lap_span = document.createElement("span");
-    lap_span.className = "lap-time";
-    lap_span.innerText = formatTimeSeconds(lapTime);
-    lap_div.appendChild(lap_span);
-}
-
-// Store that the user acknowledge the splash screen
-function splashAcknowledge() {
-    saveLocalStorage("confirmSplash", "v2");
-    splashConfirm();
-}
-
-// Display the splash screen for those who haven't acknowledged it
-function splashConfirm() {
-    const confirmSplash = getLocalStorage("confirmSplash");
-    if (confirmSplash == "v2") {
-        document.getElementById("splash-screen").style.display = "none";
-    } else {
-        document.getElementById("splash-screen").style.display = "flex";
-    }
-}
-
-
-
-
-
-
-
-
-
 // ######################################
 // ########### RUN AT STARTUP ###########
 // ######################################
-splashConfirm();
+confirmSplash();
 goToView("timer");
 applySettings(); // Run applySettings() to get everything setup!
 

@@ -1,20 +1,6 @@
-.grid {
-    /* display: grid;  This is set via JavaScript */
-    grid-template-rows: auto auto;
-    grid-template-columns: 1fr 1fr;
-    gap: .1em 3em;
-    justify-items: center;
-    /* Horizontally center align the content */
-    align-items: center;
-    /* Vertically center align the content */
-}
-
-.grid-top,
-.grid-bottom {
-    text-align: center;
-    /* Optionally center align the text within the divs */
-}
-
+/* ###########################
+   ##### GENERIC CLASSES #####
+   ########################### */
 
 body {
     font-family: 'Lato', sans-serif;
@@ -25,44 +11,126 @@ body {
     max-width: 600px;
 }
 
-#timer,
-#race-details {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.content {
-    display: flex;
-    width: 75%;
-    justify-content: space-between;
-}
-
-.h1,
-.h2,
-.h3,
-.h4 {
-    font-size: 1rem;
-}
-
 .h1 {
+    font-size: 1rem;
     color: #2e8ece;
 }
 
+.h2 {
+    font-size: 1rem;
+}
+
 .h3 {
+    font-size: 2rem;
     display: flex;
     justify-content: center;
     border-top: 1px solid rgba(255, 255, 255, 0.15);
     padding: 0.5rem 0;
-    font-size: 2rem;
     width: 100%;
 }
+
+
 
 .stopwatch {
     font-size: 4rem;
     color: #2e8ece;
 }
+
+.container {
+    display: flex;
+    width: 100%
+}
+
+.column {
+    flex: 1;
+    text-align: center;
+}
+
+.row {
+    margin: 1rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 100;
+    margin: 0;
+}
+
+h2 {
+    font-size: 1rem;
+    font-weight: 100;
+    margin: 0;
+}
+
+
+
+
+
+
+
+
+/* ######################
+   ##### CONTAINERS #####
+   ###################### */
+
+#timer,
+#history-details {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#lap-history,
+#history-list,
+#history-details-laps {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+
+/* #################
+   ##### TIMER #####
+   ################# */
+
+/*
+.timer-metrics {
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
+    row-gap: .1rem;
+    column-gap: 3rem;
+    justify-items: center;
+    text-align: center;
+} 
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .target {
     opacity: 0.6;
@@ -80,6 +148,13 @@ body {
     font-size: 3rem;
 }
 
+
+
+.button-container {
+    display: flex;
+    width: 75%;
+    justify-content: space-between;
+}
 
 
 button {
@@ -142,6 +217,11 @@ button {
     outline: 2px solid #2e8ece;
 }
 
+
+/* ##########################
+   ##### TIMER SETTINGS #####
+   ########################## */
+
 #settings {
     width: 100%;
     margin: 2rem;
@@ -181,68 +261,12 @@ button {
     margin-bottom: .8rem;
 }
 
-/* SAVED RUNS */
-#history {
-    width: 100%;
-    margin-top: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    overflow-y: auto;
-}
 
 
 
-
-
-
-/* RACE HISTORY LIST */
-.summary-div {
-    display: flex;
-    flex-direction: row;
-    font-size: 1.5rem;
-    width: 96%;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 1.5rem 0;
-}
-
-.summary-left-col {
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-}
-
-.summary-time {
-    width: 25%;
-    font-weight: 600;
-    text-align: right;
-    margin: auto;
-}
-
-.summary-name {
-    color: #2e8ece;
-}
-
-.summary-date {
-    opacity: 0.6;
-}
-
-
-
-
-
-/* LAP HISTORY LIST */
-#lap-history,
-#race-details-laps {
-    width: 100%;
-    margin-top: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    overflow-y: auto;
-}
+/* ####################
+   ##### LAP LIST #####
+   #################### */
 
 .lap-div {
     font-size: 1.5rem;
@@ -285,8 +309,6 @@ button {
 }
 
 
-
-
 /* RELAY HISTORY LIST */
 .relay-runner {
     opacity: 0.6;
@@ -313,6 +335,48 @@ button {
     margin: .5rem;
 }
 
+
+
+
+
+/* ########################
+   ##### HISTORY VIEW #####
+   ######################## */
+
+.history-list-div {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.5rem;
+    width: 96%;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 1.5rem 0;
+}
+
+.history-list-left-col {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.history-list-time {
+    width: 25%;
+    font-weight: 600;
+    text-align: right;
+    margin: auto;
+}
+
+.history-list-name {
+    color: #2e8ece;
+}
+
+.history-list-date {
+    opacity: 0.6;
+}
+
+
+/* #########################
+   ##### SPLASH SCREEN #####
+   ######################### */
 
 #splash-screen {
     position: fixed;
@@ -355,8 +419,9 @@ button {
 }
 
 
-
-/* ##### NAVIGATION MENU ##### */
+/* ###########################
+   ##### NAVIGATION MENU #####
+   ########################### */
 
 #navigation-bar {
     display: flex;
