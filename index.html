@@ -2,13 +2,17 @@
 <html lang="en">
 
 <head>
+    <title>Omega Minds - MindMeter</title>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omega Minds - MindMeter</title>
-    <link rel="stylesheet" href="./style.css?v7">
-    <link rel="stylesheet" href="./menu.css?v7">
     <script src="https://kit.fontawesome.com/446f7c5010.js" crossorigin="anonymous"></script>
+
+    <!-- No caching fix for style.css -->
+    <script>document.write('<link rel="stylesheet" href="./style.css?v=' + Math.floor(Math.random() * 100) + '"\>');</script>
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -34,8 +38,8 @@
             <ul>
                 <li onclick="navClose.click();goToView('timer');">Timer</li>
                 <li onclick="navClose.click();goToView('history');">History</li>
-                <li onclick="navClose.click();">About</li>
             </ul>
+            <div id="navigation-version"><h2>v2024.06.21</h2></div>
         </div>
         <div id="navigation-sidebar-overlay"></div>
     </div>
@@ -54,7 +58,7 @@
         <label id="timer-time" class="stopwatch">00:00:000</label>
         <label id="timer-sub-heading" class="h1">TOTAL TIME</label>
 
-        <div id="timer-metrics" class="container">
+        <div id="timer-metrics">
             <div id="timer-target-metrics" class="column">
                 <div class="row">
                     <h1 id="timer-target-split">00:00</h1>
@@ -76,12 +80,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
 
         <div class="button-container">
             <button id="actionButton1" class="start">Start</button>
@@ -171,10 +169,8 @@
         </div>
     </div>
 
-
-
-
-    <script src="./script.js?v7"></script>
+    <!-- No caching fix for script.js -->
+    <script>document.write('<script src="./script.js?v=' + Math.floor(Math.random() * 100) + '"\><\/script>');</script>
 </body>
 
 </html>

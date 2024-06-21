@@ -36,18 +36,15 @@ body {
     color: #2e8ece;
 }
 
-.container {
-    display: flex;
-    width: 100%
-}
-
 .column {
+    display: flex;
     flex: 1;
     text-align: center;
 }
 
 .row {
     margin: 1rem;
+    width: 50%;
 }
 
 h1 {
@@ -79,6 +76,7 @@ h2 {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    width: 100%;
 }
 
 #lap-history,
@@ -97,39 +95,6 @@ h2 {
 /* #################
    ##### TIMER #####
    ################# */
-
-/*
-.timer-metrics {
-    grid-template-rows: auto auto;
-    grid-template-columns: 1fr 1fr;
-    row-gap: .1rem;
-    column-gap: 3rem;
-    justify-items: center;
-    text-align: center;
-} 
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 .target {
@@ -495,4 +460,10 @@ button {
     padding: 20px;
     font-size: 2.5rem;
     font-weight: 400;
+}
+
+#navigation-version {
+    position: absolute;
+    bottom: 0;
+    margin: 1rem;
 }

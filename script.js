@@ -424,12 +424,17 @@ function updateTargetLapPace() {
             //Not the first lap and not the last lap
             laps[currentLap - 1].targetSplit = targetMeterPace * settings.lapDistance;
         }
-
+        
+        // Handle negative target splits if runner is too far behind target time.
         console.log("laps[currentLap - 1].targetSplit: " + laps[currentLap - 1].targetSplit);
+        if (laps[currentLap - 1].targetSplit > 0) {
+            document.getElementById("timer-target-split").innerText = formatTimeSeconds(laps[currentLap - 1].targetSplit);
+        } else {
+            document.getElementById("timer-target-split").innerText = 'N/A';
+        }
 
-        document.getElementById("timer-target-split").innerText = formatTimeSeconds(laps[currentLap - 1].targetSplit);
         document.getElementById("timer-target-time").innerHTML = formatTimeSeconds(settings.targetTime);
-        document.getElementById("timer-target-metrics").style.display = "block";
+        document.getElementById("timer-target-metrics").style.display = "flex";
     } else {
         document.getElementById("timer-target-metrics").style.display = "none";
     }
@@ -463,7 +468,7 @@ function applySettings() {
             race.name = '3000 Meter';
             race.meters = 3000;
             race.laps = 8;
-            race.firstLapMeters = 300;
+            race.firstLapMeters = 200;
             race.lastLapMeters = 400;
             break;
         case '3200m':
@@ -873,6 +878,12 @@ function formatDate(dateObj, format) {
         return formatters[match] || match;
     });
 }
+
+
+
+
+
+
 
 
 // ######################################
