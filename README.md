@@ -1,5 +1,7 @@
 # MindMeter
 
+**[Live App](https://www.omegaminds.com/mindmeter/)**
+
 A mobile-first lap timer for track & field races. Configure your event, hit Start, and press Lap at each split — MindMeter tracks your pace, estimates your finish time, and saves your race history.
 
 ## Features

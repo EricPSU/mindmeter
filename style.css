@@ -469,6 +469,6 @@ button {
 
 #navigation-version {
     position: absolute;
-    bottom: 0;
+    bottom: 5rem;
     margin: 1rem;
 }
