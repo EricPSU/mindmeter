@@ -462,6 +462,11 @@ button {
     font-weight: 400;
 }
 
+#navigation-sidebar li a {
+    color: white;
+    text-decoration: none;
+}
+
 #navigation-version {
     position: absolute;
     bottom: 0;
