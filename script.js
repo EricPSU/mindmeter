@@ -252,12 +252,60 @@ function calculateLapMetrics() {
     }
 
     //Calculate the estimated finish time
+    // Uses a recency-weighted average pace (sec/meter) across all completed laps,
+    // then projects that pace over the remaining distance. This is more accurate than
+    // using only the first lap or most recent lap as a single data point.
     if (currentLap <= race.laps) {
+        // Determine this lap's distance (mirrors logic below since meters aren't set yet)
+        let thisLapMeters;
         if (currentLap == 1) {
-            //The first lap is sometimes a partial lap, convert the time to a full lap
-            laps[currentLap - 1].estimateTime = race.laps * (laps[currentLap - 1].split * (settings.lapDistance / race.firstLapMeters));
+            thisLapMeters = race.firstLapMeters;
+        } else if (currentLap == race.laps) {
+            thisLapMeters = race.lastLapMeters;
         } else {
-            laps[currentLap - 1].estimateTime = laps[currentLap - 1].time + (laps[currentLap - 1].split * (race.laps - currentLap));
+            thisLapMeters = settings.lapDistance;
+        }
+
+        // Build weighted average pace across all completed laps (more recent = higher weight)
+        let totalWeight = 0;
+        let weightedPaceSum = 0;
+        for (let i = 0; i < currentLap - 1; i++) {
+            if (laps[i].meters > 0 && laps[i].split > 0) {
+                const lapPace = laps[i].split / laps[i].meters;
+                weightedPaceSum += lapPace * (i + 1);
+                totalWeight += (i + 1);
+            }
+        }
+        if (thisLapMeters > 0 && laps[currentLap - 1].split > 0) {
+            const lapPace = laps[currentLap - 1].split / thisLapMeters;
+            weightedPaceSum += lapPace * currentLap;
+            totalWeight += currentLap;
+        }
+
+        if (totalWeight > 0) {
+            const avgPace = weightedPaceSum / totalWeight;
+            // Compute remaining meters after this lap completes
+            let metersRunSoFar = thisLapMeters;
+            for (let i = 0; i < currentLap - 1; i++) {
+                metersRunSoFar += laps[i].meters;
+            }
+            const remainingAfterLap = race.meters - metersRunSoFar;
+            laps[currentLap - 1].estimateTime = timerSeconds + (avgPace * remainingAfterLap);
+
+            console.log("------ Estimated Finish Time ------");
+            console.log("Lap breakdown (pace sec/meter × weight):");
+            for (let i = 0; i < currentLap; i++) {
+                const m = (i < currentLap - 1) ? laps[i].meters : thisLapMeters;
+                const s = laps[i].split;
+                const w = i + 1;
+                if (m > 0 && s > 0) {
+                    console.log(`  Lap ${i + 1}: ${s.toFixed(2)}s / ${m}m = ${(s/m).toFixed(4)} sec/m  (weight: ${w})`);
+                }
+            }
+            console.log("avgPace (sec/m): " + avgPace.toFixed(4));
+            console.log("remainingAfterLap (m): " + remainingAfterLap);
+            console.log("estimateTime (s): " + laps[currentLap - 1].estimateTime.toFixed(2));
+            console.log("estimateTime (formatted): " + formatTimeSeconds(laps[currentLap - 1].estimateTime));
         }
     }
 
@@ -360,7 +408,6 @@ function finish() {
 function reset() {
     //Reset and clear everything
     timerSeconds = 0;
-    timerPause = 0;
     currentLap = 1;
     lap_history_div.innerHTML = "";
 
@@ -500,9 +547,14 @@ function applySettings() {
 
     // Lap Distance: Adjust for 200m laps
     if (settings.lapDistance == 200) {
-        race.firstLapMeters = race.firstLapMeters - 200;
-        race.lastLapMeters = race.lastLapMeters - 200;
-        race.laps = race.laps * 2;
+        // Only subtract 200 from partial laps that are larger than 200m (e.g. 300m for 1500m).
+        // If a partial lap is already 200m (e.g. 3000m first lap), it stays as-is and
+        // doesn't need to be sub-split, so the total lap count increases by one less.
+        const firstNeedsSplit = race.firstLapMeters > 200;
+        const lastNeedsSplit = race.lastLapMeters > 200;
+        if (firstNeedsSplit) race.firstLapMeters -= 200;
+        if (lastNeedsSplit) race.lastLapMeters -= 200;
+        race.laps = race.laps * 2 - (!firstNeedsSplit ? 1 : 0) - (!lastNeedsSplit ? 1 : 0);
     }
 
     // Target Time: Estimate lap pace and display target time
@@ -707,7 +759,7 @@ function displayHistoryDetails(raceId) {
     // Display the data
     document.getElementById("history-details-time").innerText = formatTime(race.time);
     document.getElementById("history-details-name").innerText = race.name;
-    document.getElementById("history-details-date").innerText = formatDate(new Date(race.lapData[0].start), 'ddd, MMM DD hh:MM a');;
+    document.getElementById("history-details-date").innerText = formatDate(new Date(race.lapData[0].start), 'ddd, MMM DD hh:mm a');
     let parentDiv = document.getElementById("history-details-laps");
     parentDiv.innerHTML = ''; // Clear previous laps
     race.lapData.forEach((lap, index) => {
@@ -804,12 +856,6 @@ function confirmSplash() {
 // ########## HELPER FUNCTIONS ##########
 // ######################################
 
-
-/* Checks if the value is an integer and the remainder of 
-dividing it by 1 is 0.  Returns a boolean. */
-function isWholeNumber(value) {
-    return Number.isInteger(value) && value % 1 === 0;
-}
 
 /* Transforms seconds into minutes:seconds. Input is a number 
 of seconds and output is formatted for time. Returns a string. */
@@ -937,7 +983,6 @@ settings_partial_lap.addEventListener("change", function () {
 document.addEventListener('DOMContentLoaded', function () {
     var minutesDropdown = document.getElementById('minutes');
     var secondsDropdown = document.getElementById('seconds');
-    var setButton = document.getElementById('setButton');
     var clearButton = document.getElementById('clearButton');
 
     // Add options to minutes dropdown
@@ -987,7 +1032,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Function to handle action buttons
 function handleActionButton(event) {
-    const selectedButton = event.target;
+    const selectedButton = event.target.closest('button');
+    if (!selectedButton) return;
     console.log(`Action button ${selectedButton.className} was selected.`);
 
     switch (selectedButton.className) {
@@ -996,7 +1042,7 @@ function handleActionButton(event) {
             laps[currentLap - 1].start = new Date(timerStartDate); //Initialize when lap started
             start();
             break;
-        case 'pause': case 'fa-solid fa-pause':
+        case 'pause':
             pause();
             break;
         case 'resume':
@@ -1010,7 +1056,7 @@ function handleActionButton(event) {
         case 'finish':
             finish();
             break;
-        case 'reset': case 'fa-solid fa-rotate':
+        case 'reset':
             reset();
             break;
     }
