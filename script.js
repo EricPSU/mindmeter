@@ -772,7 +772,8 @@ function displayHistoryDetails(raceId) {
 }
 
 function goToView(view) {
-    window.location.hash = view;
+    window.scrollTo(0, 0);
+    history.pushState(null, null, '#' + view);
     switch (view) {
         case 'timer':
             document.getElementById("timer").style.display = "flex";
