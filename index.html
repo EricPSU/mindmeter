@@ -38,6 +38,7 @@
             <ul>
                 <li onclick="navClose.click();goToView('timer');"><i class="fa-solid fa-stopwatch"></i> Timer</li>
                 <li onclick="navClose.click();goToView('history');"><i class="fa-solid fa-clock-rotate-left"></i> History</li>
+                <li onclick="navClose.click();goToView('pacemaker');"><i class="fa-solid fa-calculator"></i> Pacemaker</li>
                 <li><a href="https://github.com/EricPSU/mindmeter" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> GitHub</a></li>
             </ul>
             <div id="navigation-version"><h2>v2026.04.10</h2></div>
@@ -165,6 +166,59 @@
                 <button id="history-details-delete" class="pause"><i class="fa-solid fa-trash"></i></button>
                 <button id="history-details-back" class="lap" onclick="goToView('history-list');">Back</button>
             </div>
+        </div>
+    </div>
+
+    <div id="pacemaker">
+        <label class="h3">Pacemaker</label>
+
+        
+
+        <div id="pc-inputs">
+            <div class="pc-input-col">
+                <div class="pc-input-row">
+                    <input type="number" class="pc-num-input" id="pc-pace-min" min="0" max="59" placeholder="0" oninput="paceCalcFromPace()">
+                    <span class="pc-colon">:</span>
+                    <input type="number" class="pc-num-input" id="pc-pace-sec" min="0" max="59" placeholder="00" oninput="paceCalcFromPace()">
+                </div>
+                <h2>PACE / MILE</h2>
+            </div>
+            <div class="pc-input-col">
+                <div class="pc-input-row">
+                    <input type="number" class="pc-num-input" id="pc-time-min" min="0" max="99" placeholder="0" oninput="paceCalcFromTime()">
+                    <span class="pc-colon">:</span>
+                    <input type="number" class="pc-num-input" id="pc-time-sec" min="0" max="59" placeholder="00" oninput="paceCalcFromTime()">
+                </div>
+                <h2>TIME</h2>
+            </div>
+        </div>
+
+        <div id="pc-splits-section">
+            <div id="pc-splits-header">
+                <div id="pc-distance-group">
+                    <span class="pc-splits-title">Distance</span>
+                    <select id="pc-distance" onchange="paceCalcDistanceChanged()">
+                        <option value="800">800m</option>
+                        <option value="1500" selected>1500m</option>
+                        <option value="1600">1600m</option>
+                        <option value="3000">3000m</option>
+                        <option value="3200">3200m</option>
+                        <option value="5000">5000m</option>
+                        <option value="10000">10000m</option>
+                    </select>
+                </div>
+                <div>
+                    <button id="pc-toggle-200" class="pc-toggle-btn active" onclick="pcSetSplitDistance(200)">200m</button>
+                    <button id="pc-toggle-400" class="pc-toggle-btn" onclick="pcSetSplitDistance(400)">400m</button>
+                </div>
+            </div>
+            <div class="lap-div pc-table-header">
+                <span class="lap-num">LAP</span>
+                <span class="pc-dist">DIST</span>
+                <span class="lap-split">SPLIT</span>
+                <span class="lap-time">TIME</span>
+            </div>
+            <div id="pc-splits-list"></div>
         </div>
     </div>
 

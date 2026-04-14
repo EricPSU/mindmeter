@@ -11,6 +11,7 @@ A mobile-first lap timer for track & field races. Configure your event, hit Star
 - **Target time** — set a goal finish time and get a live target split that updates each lap
 - **Race history** — finished races are saved to your device and can be reviewed or deleted at any time
 - **Relay support** — 4x800m mode displays per-runner totals at each exchange
+- **Pacemaker** — calculate finish time from a target pace, or back-calculate pace from a goal finish time, with a full split breakdown
 
 ## Supported Events
 
@@ -33,6 +34,10 @@ A mobile-first lap timer for track & field races. Configure your event, hit Star
 | **Target Time** | Optional goal finish time — enables a live target split display |
 
 Settings are saved to a cookie and restored automatically on your next visit.
+
+## Pacemaker
+
+Select a distance (800m–10000m), then enter either a **pace** (min:sec per mile) or a **goal time** (min:sec) — the other field calculates automatically. Below the inputs, a split table shows projected times at every 200m or 400m interval, toggled with the buttons in the header. Partial last laps (e.g. the final 100m of a 1500m at 200m splits) are shown proportionally.
 
 ## How It Works
 

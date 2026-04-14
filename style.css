@@ -71,7 +71,8 @@ h2 {
    ###################### */
 
 #timer,
-#history-details {
+#history-details,
+#pacemaker {
     display: none;
     align-items: center;
     justify-content: center;
@@ -384,6 +385,121 @@ button {
 }
 
 
+/* ##############################
+   ##### PACE CALCULATOR ########
+   ############################## */
+
+#pc-inputs {
+    display: flex;
+    width: 100%;
+    text-align: center;
+}
+
+.pc-input-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.pc-input-row {
+    display: flex;
+    align-items: center;
+}
+
+.pc-num-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 3.5rem;
+    font-weight: 100;
+    font-family: inherit;
+    width: 2.5ch;
+    text-align: center;
+    outline: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.pc-num-input::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.pc-num-input::-webkit-outer-spin-button,
+.pc-num-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.pc-colon {
+    font-size: 3.5rem;
+    font-weight: 100;
+    margin: 0 0.2rem;
+    line-height: 1;
+}
+
+#pc-splits-section {
+    width: 100%;
+}
+
+#pc-splits-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.5rem 2%;
+    width: 96%;
+}
+
+#pc-distance-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.pc-splits-title {
+    font-size: 1.5rem;
+}
+
+.pc-toggle-btn {
+    font-size: 1rem;
+    height: 2rem;
+    padding: 0 1rem;
+    margin: 0 0.2rem;
+    margin-top: 0;
+    background-color: rgb(75, 75, 75);
+}
+
+.pc-toggle-btn.active {
+    background-color: #2e8ece;
+}
+
+.pc-dist {
+    width: 25%;
+    text-align: right;
+}
+
+.pc-table-header {
+    opacity: 0.5;
+    font-size: 0.9rem;
+    padding: 1.5rem 2% .5rem 2%;
+}
+
+.pc-table-header .lap-split {
+    font-weight: 100;
+}
+
+#pc-splits-list {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
 /* ###########################
    ##### NAVIGATION MENU #####
    ########################### */
@@ -469,6 +585,6 @@ button {
 
 #navigation-version {
     position: absolute;
-    bottom: 5rem;
+    bottom: 8rem;
     margin: 1rem;
 }

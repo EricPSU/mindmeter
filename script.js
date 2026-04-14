@@ -772,15 +772,23 @@ function displayHistoryDetails(raceId) {
 }
 
 function goToView(view) {
+    window.location.hash = view;
     switch (view) {
         case 'timer':
             document.getElementById("timer").style.display = "flex";
             document.getElementById("history").style.display = "none";
+            document.getElementById("pacemaker").style.display = "none";
             break;
         case 'history':
             document.getElementById("timer").style.display = "none";
             document.getElementById("history").style.display = "flex";
+            document.getElementById("pacemaker").style.display = "none";
             displayHistoryList();
+            break;
+        case 'pacemaker':
+            document.getElementById("timer").style.display = "none";
+            document.getElementById("history").style.display = "none";
+            document.getElementById("pacemaker").style.display = "flex";
             break;
         case 'history-list':
             document.getElementById("history-list").style.display = "flex";
@@ -1070,6 +1078,146 @@ actionButton2.addEventListener("click", handleActionButton);
 // ########### RUN AT STARTUP ###########
 // ######################################
 confirmSplash();
-goToView("timer");
+const initialView = ['timer', 'history', 'pacemaker'].includes(window.location.hash.slice(1))
+    ? window.location.hash.slice(1)
+    : 'timer';
+goToView(initialView);
 applySettings(); // Run applySettings() to get everything setup!
+
+
+// ######################################
+// ########## PACE CALCULATOR ###########
+// ######################################
+
+var pcSplitDistance = 200;
+var pcLastEdited = 'pace';
+
+function paceCalcFromPace() {
+    pcLastEdited = 'pace';
+    var paceMinVal = document.getElementById('pc-pace-min').value;
+    var paceSecVal = document.getElementById('pc-pace-sec').value;
+
+    if (paceMinVal === '' && paceSecVal === '') {
+        document.getElementById('pc-time-min').value = '';
+        document.getElementById('pc-time-sec').value = '';
+        document.getElementById('pc-splits-list').innerHTML = '';
+        return;
+    }
+
+    var paceMin = parseInt(paceMinVal) || 0;
+    var paceSec = parseInt(paceSecVal) || 0;
+    var paceSeconds = paceMin * 60 + paceSec;
+
+    if (paceSeconds <= 0) {
+        document.getElementById('pc-time-min').value = '';
+        document.getElementById('pc-time-sec').value = '';
+        document.getElementById('pc-splits-list').innerHTML = '';
+        return;
+    }
+
+    var distance = parseInt(document.getElementById('pc-distance').value);
+    var totalSeconds = (distance / 1609.344) * paceSeconds;
+    var totalMin = Math.floor(totalSeconds / 60);
+    var totalSec = Math.round(totalSeconds % 60);
+    if (totalSec >= 60) { totalMin++; totalSec -= 60; }
+
+    document.getElementById('pc-time-min').value = totalMin;
+    document.getElementById('pc-time-sec').value = String(totalSec).padStart(2, '0');
+
+    pcBuildSplits(distance, paceSeconds, pcSplitDistance);
+}
+
+function paceCalcFromTime() {
+    pcLastEdited = 'time';
+    var timeMinVal = document.getElementById('pc-time-min').value;
+    var timeSecVal = document.getElementById('pc-time-sec').value;
+
+    if (timeMinVal === '' && timeSecVal === '') {
+        document.getElementById('pc-pace-min').value = '';
+        document.getElementById('pc-pace-sec').value = '';
+        document.getElementById('pc-splits-list').innerHTML = '';
+        return;
+    }
+
+    var timeMin = parseInt(timeMinVal) || 0;
+    var timeSec = parseInt(timeSecVal) || 0;
+    var totalSeconds = timeMin * 60 + timeSec;
+
+    if (totalSeconds <= 0) {
+        document.getElementById('pc-pace-min').value = '';
+        document.getElementById('pc-pace-sec').value = '';
+        document.getElementById('pc-splits-list').innerHTML = '';
+        return;
+    }
+
+    var distance = parseInt(document.getElementById('pc-distance').value);
+    var paceSeconds = totalSeconds / (distance / 1609.344);
+    var paceMin = Math.floor(paceSeconds / 60);
+    var paceSec = Math.round(paceSeconds % 60);
+    if (paceSec >= 60) { paceMin++; paceSec -= 60; }
+
+    document.getElementById('pc-pace-min').value = paceMin;
+    document.getElementById('pc-pace-sec').value = String(paceSec).padStart(2, '0');
+
+    pcBuildSplits(distance, paceSeconds, pcSplitDistance);
+}
+
+function paceCalcDistanceChanged() {
+    if (pcLastEdited === 'pace') {
+        paceCalcFromPace();
+    } else {
+        paceCalcFromTime();
+    }
+}
+
+function pcSetSplitDistance(meters) {
+    pcSplitDistance = meters;
+    document.getElementById('pc-toggle-200').classList.toggle('active', meters === 200);
+    document.getElementById('pc-toggle-400').classList.toggle('active', meters === 400);
+    paceCalcDistanceChanged();
+}
+
+function pcBuildSplits(totalMeters, paceSecondsPerMile, splitDistance) {
+    var container = document.getElementById('pc-splits-list');
+    container.innerHTML = '';
+
+    if (!paceSecondsPerMile || paceSecondsPerMile <= 0) return;
+
+    var cumulativeSeconds = 0;
+    var lapNum = 1;
+    var distanceCovered = 0;
+
+    while (distanceCovered < totalMeters) {
+        var thisLapDistance = Math.min(splitDistance, totalMeters - distanceCovered);
+        var thisLapSeconds = paceSecondsPerMile * (thisLapDistance / 1609.344);
+        cumulativeSeconds += thisLapSeconds;
+        distanceCovered += thisLapDistance;
+
+        var row = document.createElement('div');
+        row.className = 'lap-div';
+
+        var lapNumSpan = document.createElement('span');
+        lapNumSpan.className = 'lap-num';
+        lapNumSpan.innerText = lapNum;
+        row.appendChild(lapNumSpan);
+
+        var distSpan = document.createElement('span');
+        distSpan.className = 'pc-dist';
+        distSpan.innerText = distanceCovered + 'm';
+        row.appendChild(distSpan);
+
+        var splitSpan = document.createElement('span');
+        splitSpan.className = 'lap-split';
+        splitSpan.innerText = formatTimeSeconds(thisLapSeconds);
+        row.appendChild(splitSpan);
+
+        var cumSpan = document.createElement('span');
+        cumSpan.className = 'lap-time';
+        cumSpan.innerText = formatTimeSeconds(cumulativeSeconds);
+        row.appendChild(cumSpan);
+
+        container.appendChild(row);
+        lapNum++;
+    }
+}
 
