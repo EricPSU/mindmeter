@@ -35,9 +35,6 @@ A mobile-first lap timer for track & field races. Configure your event, hit Star
 
 Settings are saved to a cookie and restored automatically on your next visit.
 
-## Pacemaker
-
-Select a distance (800m–10000m), then enter either a **pace** (min:sec per mile) or a **goal time** (min:sec) — the other field calculates automatically. Below the inputs, a split table shows projected times at every 200m or 400m interval, toggled with the buttons in the header. Partial last laps (e.g. the final 100m of a 1500m at 200m splits) are shown proportionally.
 
 ## How It Works
 
@@ -48,6 +45,11 @@ After each lap, MindMeter calculates a pace in seconds-per-meter for every compl
 ### Target Split
 
 When a target finish time is set, MindMeter calculates the required pace over the remaining distance after each lap and displays the split you need to hit for the next lap to stay on goal. If you fall too far behind, it displays N/A.
+
+
+## Pacemaker
+
+Select a distance (800m–10000m), then enter either a **pace** (min:sec per mile) or a **goal time** (min:sec) — the other field calculates automatically. Below the inputs, a split table shows projected times at every 200m or 400m interval, toggled with the buttons in the header. Partial last laps (e.g. the final 100m of a 1500m at 200m splits) are shown proportionally.
 
 ## Tech Stack
 
