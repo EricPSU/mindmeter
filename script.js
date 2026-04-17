@@ -1090,7 +1090,7 @@ applySettings(); // Run applySettings() to get everything setup!
 // ########## PACE CALCULATOR ###########
 // ######################################
 
-var pcSplitDistance = 200;
+var pcSplitDistance = 400;
 var pcLastEdited = 'pace';
 
 function paceCalcFromPace() {
@@ -1187,9 +1187,10 @@ function pcBuildSplits(totalMeters, paceSecondsPerMile, splitDistance) {
     var cumulativeSeconds = 0;
     var lapNum = 1;
     var distanceCovered = 0;
+    var remainder = totalMeters % splitDistance;
 
     while (distanceCovered < totalMeters) {
-        var thisLapDistance = Math.min(splitDistance, totalMeters - distanceCovered);
+        var thisLapDistance = (lapNum === 1 && remainder > 0) ? remainder : splitDistance;
         var thisLapSeconds = paceSecondsPerMile * (thisLapDistance / 1609.344);
         cumulativeSeconds += thisLapSeconds;
         distanceCovered += thisLapDistance;
