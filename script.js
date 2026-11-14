@@ -1083,6 +1083,11 @@ const initialView = ['timer', 'history', 'pacemaker'].includes(window.location.h
     ? window.location.hash.slice(1)
     : 'timer';
 goToView(initialView);
+// The URL hash (#timer, #pacemaker, #history) matches a container id, so the browser
+// auto-scrolls to it on load and hides the header. Disable scroll restoration and
+// reset to the top once the browser has finished its own fragment scroll.
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.addEventListener('load', function () { window.scrollTo(0, 0); });
 applySettings(); // Run applySettings() to get everything setup!
 
 
