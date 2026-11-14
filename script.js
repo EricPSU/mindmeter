@@ -1,3 +1,10 @@
+// Splash screen controls (apply to every user)
+// SPLASH_ENABLED: set to false to hide the splash screen for everyone.
+// SPLASH_VERSION: change this (e.g. "v3") when you post a new message so
+//   everyone who dismissed the old one sees the new one.
+const SPLASH_ENABLED = false;
+const SPLASH_VERSION = "v2";
+
 // Variables
 const lap_history_div = document.getElementById("lap-history");
 const actionButton1 = document.getElementById("actionButton1");
@@ -844,14 +851,14 @@ function addLap(parentDiv, lapNum, lapDelta, lapSplit, lapTime) {
 
 // Store that the user acknowledge the splash screen
 function acknowledgeSplash() {
-    saveLocalStorage("confirmSplash", "v2");
+    saveLocalStorage("confirmSplash", SPLASH_VERSION);
     confirmSplash();
 }
 
 // Display the splash screen for those who haven't acknowledged it
 function confirmSplash() {
     const confirmSplash = getLocalStorage("confirmSplash");
-    if (confirmSplash == "v2") {
+    if (!SPLASH_ENABLED || confirmSplash == SPLASH_VERSION) {
         document.getElementById("splash-screen").style.display = "none";
     } else {
         document.getElementById("splash-screen").style.display = "flex";
